@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>相続税調査分析システム - 改良版</title>
+    <title>相続税調査分析システム v3</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Yu Gothic', 'Hiragino Sans', 'Meiryo', sans-serif;
-            background: #f0f2f5;
+            background: #f5f6fa;
             min-height: 100vh;
             padding: 20px;
             color: #2c3e50;
@@ -23,15 +23,15 @@
             max-width: 1600px;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             overflow: hidden;
         }
         
         .header {
-            background: linear-gradient(135deg, #1a237e, #3949ab);
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
-            padding: 30px;
+            padding: 40px;
             position: relative;
             overflow: hidden;
         }
@@ -41,72 +41,73 @@
             position: absolute;
             top: -50%;
             right: -50%;
-            bottom: -50%;
-            left: -50%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            transform: rotate(45deg);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            transform: rotate(30deg);
             pointer-events: none;
         }
         
         .header h1 {
-            font-size: 2.2em;
-            margin-bottom: 8px;
+            font-size: 2.5em;
+            margin-bottom: 10px;
             position: relative;
             z-index: 1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         
         .header p {
-            font-size: 1em;
-            opacity: 0.95;
+            font-size: 1.1em;
+            opacity: 0.9;
             position: relative;
             z-index: 1;
         }
         
         .upload-section {
-            padding: 30px;
+            padding: 40px;
             background: #fafbfc;
-            border-bottom: 1px solid #e1e4e8;
+            border-bottom: 2px solid #e9ecef;
         }
         
         .section-title {
-            font-size: 1.4em;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #1a237e;
+            font-size: 1.6em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #2c3e50;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .file-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
         }
         
         .file-input-group {
             background: white;
-            padding: 25px;
-            border: 2px dashed #d1d5db;
-            border-radius: 8px;
+            padding: 30px;
+            border: 3px dashed #cbd5e0;
+            border-radius: 12px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
             overflow: hidden;
         }
         
         .file-input-group:hover {
-            border-color: #3949ab;
-            background: #f8f9ff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(57, 73, 171, 0.15);
+            border-color: #3498db;
+            background: #f8fbff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.15);
         }
         
         .file-input-group.uploaded {
-            border-color: #4caf50;
+            border-color: #27ae60;
             border-style: solid;
             background: #f0fdf4;
         }
@@ -114,113 +115,117 @@
         .file-input-group.uploaded::after {
             content: '✓';
             position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #4caf50;
-            font-size: 24px;
+            top: 15px;
+            right: 15px;
+            color: #27ae60;
+            font-size: 28px;
             font-weight: bold;
         }
         
         .file-input {
             width: 100%;
-            padding: 10px;
-            margin-top: 12px;
-            border: 1px solid #e1e4e8;
-            border-radius: 6px;
+            padding: 12px;
+            margin-top: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             cursor: pointer;
-            background: #f6f8fa;
+            background: #f8f9fa;
+            font-size: 15px;
         }
         
         .file-label {
             display: block;
-            font-weight: 600;
-            color: #24292e;
-            margin-bottom: 8px;
-            font-size: 1.15em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
         }
         
         .file-description {
-            font-size: 0.85em;
-            color: #586069;
-            line-height: 1.5;
-            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            text-align: left;
         }
         
         .file-status {
-            margin-top: 12px;
-            font-size: 0.9em;
-            color: #4caf50;
-            font-weight: 500;
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #27ae60;
+            font-weight: 600;
             display: none;
         }
         
         .config-section {
-            margin-top: 30px;
-            padding: 25px;
+            margin-top: 35px;
+            padding: 30px;
             background: white;
-            border-radius: 8px;
-            border: 1px solid #e1e4e8;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         .config-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
         }
         
         .config-item {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
         
         .config-item label {
-            font-weight: 600;
-            color: #24292e;
-            font-size: 0.95em;
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1em;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
         
         .config-item input, .config-item select {
-            padding: 10px 14px;
-            border: 1px solid #e1e4e8;
-            border-radius: 6px;
-            font-size: 14px;
-            background: #f6f8fa;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #f8f9fa;
             transition: all 0.2s;
         }
         
         .config-item input:focus, .config-item select:focus {
             outline: none;
-            border-color: #3949ab;
+            border-color: #3498db;
             background: white;
-            box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.1);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
         }
         
         .button-group {
             display: flex;
-            gap: 12px;
-            margin-top: 25px;
+            gap: 15px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
         
         .btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             position: relative;
             overflow: hidden;
+            text-transform: none;
+            letter-spacing: 0.5px;
         }
         
         .btn::before {
@@ -231,78 +236,78 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.3);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
         }
         
         .btn:active::before {
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
         }
         
         .btn-primary {
-            background: #3949ab;
+            background: #3498db;
             color: white;
-            box-shadow: 0 2px 8px rgba(57, 73, 171, 0.3);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
         
         .btn-primary:hover:not(:disabled) {
-            background: #1a237e;
+            background: #2980b9;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(57, 73, 171, 0.4);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
         }
         
         .btn-primary:disabled {
-            background: #9e9e9e;
+            background: #95a5a6;
             cursor: not-allowed;
             box-shadow: none;
         }
         
         .btn-secondary {
-            background: #607d8b;
+            background: #7f8c8d;
             color: white;
         }
         
         .btn-secondary:hover {
-            background: #455a64;
+            background: #5f6a6a;
             transform: translateY(-1px);
         }
         
         .btn-success {
-            background: #4caf50;
+            background: #27ae60;
             color: white;
         }
         
         .btn-success:hover {
-            background: #388e3c;
+            background: #219a52;
             transform: translateY(-1px);
         }
         
         .btn-warning {
-            background: #ff9800;
+            background: #f39c12;
             color: white;
         }
         
         .btn-warning:hover {
-            background: #f57c00;
+            background: #e67e22;
             transform: translateY(-1px);
         }
         
         .progress-bar {
             width: 100%;
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
+            height: 12px;
+            background: #ecf0f1;
+            border-radius: 6px;
             overflow: hidden;
-            margin: 20px 0 10px;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            margin: 25px 0 15px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4caf50, #66bb6a);
-            transition: width 0.4s ease;
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -324,27 +329,27 @@
                 transparent 75%,
                 transparent
             );
-            background-size: 30px 30px;
+            background-size: 40px 40px;
             animation: progress-animation 1s linear infinite;
         }
         
         @keyframes progress-animation {
             0% { background-position: 0 0; }
-            100% { background-position: 30px 30px; }
+            100% { background-position: 40px 40px; }
         }
         
         .status-message {
-            padding: 14px 20px;
-            border-radius: 6px;
-            margin: 20px 0;
-            font-weight: 500;
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin: 25px 0;
+            font-weight: 600;
             display: none;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         @keyframes slideIn {
             from {
-                transform: translateY(-10px);
+                transform: translateY(-15px);
                 opacity: 0;
             }
             to {
@@ -354,90 +359,90 @@
         }
         
         .status-success { 
-            background: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb;
-            border-left: 4px solid #28a745;
+            background: #d5f4e6; 
+            color: #27ae60; 
+            border: 2px solid #a9dfbf;
+            border-left: 5px solid #27ae60;
         }
         
         .status-error { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb;
-            border-left: 4px solid #dc3545;
+            background: #fadbd8; 
+            color: #e74c3c; 
+            border: 2px solid #f5b7b1;
+            border-left: 5px solid #e74c3c;
         }
         
         .status-warning { 
-            background: #fff3cd; 
-            color: #856404; 
-            border: 1px solid #ffeaa7;
-            border-left: 4px solid #ffc107;
+            background: #fef5e7; 
+            color: #f39c12; 
+            border: 2px solid #fad7a0;
+            border-left: 5px solid #f39c12;
         }
         
         .status-info { 
-            background: #d1ecf1; 
-            color: #0c5460; 
-            border: 1px solid #bee5eb;
-            border-left: 4px solid #17a2b8;
+            background: #d6eaf8; 
+            color: #2980b9; 
+            border: 2px solid #aed6f1;
+            border-left: 5px solid #3498db;
         }
         
         .analysis-container {
-            padding: 30px;
+            padding: 40px;
             display: none;
         }
         
         .tab-container {
             display: flex;
-            border-bottom: 2px solid #e1e4e8;
-            margin-bottom: 30px;
+            border-bottom: 3px solid #e9ecef;
+            margin-bottom: 35px;
             overflow-x: auto;
-            background: #f6f8fa;
-            border-radius: 8px 8px 0 0;
-            padding: 5px;
-            gap: 5px;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+            padding: 8px;
+            gap: 8px;
         }
         
         .tab {
-            padding: 14px 24px;
+            padding: 16px 28px;
             background: transparent;
             cursor: pointer;
             border: none;
-            font-size: 15px;
-            font-weight: 600;
-            color: #586069;
-            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 700;
+            color: #7f8c8d;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
-            border-radius: 6px 6px 0 0;
+            border-radius: 8px 8px 0 0;
             position: relative;
             flex-shrink: 0;
         }
         
         .tab:hover {
-            background: #e1e4e8;
-            color: #24292e;
+            background: #ecf0f1;
+            color: #2c3e50;
         }
         
         .tab.active {
             background: white;
-            color: #3949ab;
-            box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+            color: #3498db;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
         }
         
         .tab.active::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -3px;
             left: 0;
             right: 0;
-            height: 3px;
-            background: #3949ab;
-            border-radius: 3px 3px 0 0;
+            height: 4px;
+            background: #3498db;
+            border-radius: 4px 4px 0 0;
         }
         
         .tab-content {
             display: none;
-            min-height: 400px;
-            animation: fadeIn 0.4s ease;
+            min-height: 500px;
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .tab-content.active {
@@ -447,7 +452,7 @@
         @keyframes fadeIn {
             from { 
                 opacity: 0; 
-                transform: translateY(10px); 
+                transform: translateY(20px); 
             }
             to { 
                 opacity: 1; 
@@ -458,210 +463,216 @@
         /* カード型コンポーネント */
         .info-card {
             background: white;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: all 0.3s ease;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .info-card:hover {
-            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
         
         .info-card h3 {
-            color: #24292e;
-            margin-bottom: 16px;
-            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.5em;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .alert-card {
-            padding: 16px 24px;
-            margin: 20px 0;
-            border-radius: 8px;
-            border-left: 5px solid;
-            animation: slideIn 0.3s ease;
+            padding: 20px 30px;
+            margin: 25px 0;
+            border-radius: 12px;
+            border-left: 6px solid;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .alert-card.warning {
-            background: #fff8e1;
-            color: #f57c00;
-            border-color: #ff9800;
+            background: #fef5e7;
+            color: #f39c12;
+            border-color: #f39c12;
         }
         
         .alert-card.danger {
-            background: #ffebee;
-            color: #c62828;
-            border-color: #f44336;
+            background: #fadbd8;
+            color: #e74c3c;
+            border-color: #e74c3c;
         }
         
         .alert-card.info {
-            background: #e3f2fd;
-            color: #1565c0;
-            border-color: #2196f3;
+            background: #d6eaf8;
+            color: #2980b9;
+            border-color: #3498db;
         }
         
         .alert-card.success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-color: #4caf50;
+            background: #d5f4e6;
+            color: #27ae60;
+            border-color: #27ae60;
         }
         
         /* データテーブル */
         .data-table-wrapper {
             overflow-x: auto;
-            margin: 20px 0;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin: 25px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         .data-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            min-width: 600px;
+            min-width: 700px;
         }
         
         .data-table th {
-            background: #f6f8fa;
-            color: #24292e;
-            padding: 12px 16px;
+            background: #f8f9fa;
+            color: #2c3e50;
+            padding: 16px 20px;
             text-align: left;
-            font-weight: 600;
-            font-size: 14px;
-            border-bottom: 2px solid #e1e4e8;
+            font-weight: 700;
+            font-size: 15px;
+            border-bottom: 3px solid #e9ecef;
             position: sticky;
             top: 0;
             z-index: 10;
         }
         
         .data-table td {
-            padding: 12px 16px;
+            padding: 14px 20px;
             border-bottom: 1px solid #f0f3f6;
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .data-table tr:hover {
-            background: #f8f9fb;
+            background: #f8fbff;
         }
         
         .data-table tr.highlighted {
-            background: #fff8e1;
-            font-weight: 500;
+            background: #fef5e7;
+            font-weight: 600;
         }
         
-        /* 注記・フラグスタイル */
+        /* 注記・フラグスタイル（改良版） */
         .annotation-badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin: 2px;
+            padding: 6px 14px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            margin: 3px;
             white-space: nowrap;
-            text-transform: uppercase;
+            text-transform: none;
             letter-spacing: 0.5px;
         }
         
+        /* 金額関連（赤系） */
         .badge-large-amount {
-            background: #ffecb3;
-            color: #e65100;
-            border: 1px solid #ffb74d;
+            background: #fee;
+            color: #c00;
+            border: 2px solid #fcc;
         }
         
         .badge-unknown-source {
-            background: #ffccbc;
-            color: #bf360c;
-            border: 1px solid #ff8a65;
+            background: #fdd;
+            color: #a00;
+            border: 2px solid #fbb;
         }
         
+        /* 資金移動関連（青系） */
         .badge-money-shift {
-            background: #d1c4e9;
-            color: #4527a0;
-            border: 1px solid #9575cd;
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 2px solid #90caf9;
         }
         
         .badge-suspicious-shift {
-            background: #ef9a9a;
-            color: #b71c1c;
-            border: 1px solid #e57373;
+            background: #bbdefb;
+            color: #0d47a1;
+            border: 2px solid #64b5f6;
         }
         
+        /* 時期関連（橙系） */
         .badge-inheritance-period {
-            background: #ffcdd2;
-            color: #b71c1c;
-            border: 1px solid #ef5350;
+            background: #fff3e0;
+            color: #e65100;
+            border: 2px solid #ffcc80;
         }
         
+        /* 口座関連（緑系） */
         .badge-account-open {
-            background: #c8e6c9;
+            background: #e8f5e9;
             color: #1b5e20;
-            border: 1px solid #66bb6a;
+            border: 2px solid #81c784;
         }
         
         .badge-account-close {
-            background: #f8bbd0;
+            background: #fce4ec;
             color: #880e4f;
-            border: 1px solid #f06292;
+            border: 2px solid #f48fb1;
         }
         
+        /* 人物関連（紫系） */
         .badge-minor {
-            background: #bbdefb;
-            color: #0d47a1;
-            border: 1px solid #64b5f6;
+            background: #f3e5f5;
+            color: #4a148c;
+            border: 2px solid #ba68c8;
         }
         
         .badge-cohabit {
-            background: #b2dfdb;
-            color: #004d40;
-            border: 1px solid #4db6ac;
+            background: #e8eaf6;
+            color: #283593;
+            border: 2px solid #7986cb;
         }
         
+        /* その他（黄系） */
         .badge-blank-memo {
-            background: #fff176;
+            background: #fffde7;
             color: #f57f17;
-            border: 1px solid #ffd54f;
+            border: 2px solid #fff176;
         }
         
-        /* 残高推移表 */
+        /* 残高推移表（改良版） */
         .balance-table-wrapper {
             overflow-x: auto;
-            margin: 20px 0;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin: 25px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
         .balance-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            min-width: 800px;
+            min-width: 900px;
         }
         
         .balance-table th {
-            background: #1a237e;
+            background: #2c3e50;
             color: white;
-            padding: 14px 12px;
+            padding: 16px 14px;
             text-align: center;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 15px;
             position: sticky;
             top: 0;
             z-index: 10;
         }
         
         .balance-table td {
-            padding: 12px;
+            padding: 14px;
             text-align: right;
             border: 1px solid #f0f3f6;
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .balance-table tr:nth-child(even) {
@@ -673,189 +684,210 @@
         }
         
         .balance-table .person-name {
-            font-weight: 600;
+            font-weight: 700;
             text-align: left;
-            background: #f6f8fa;
-            color: #24292e;
+            background: #f8f9fa;
+            color: #2c3e50;
         }
         
         .balance-table .account-row {
-            padding-left: 30px;
+            padding-left: 35px;
             text-align: left;
-            font-size: 13px;
-            color: #586069;
+            font-size: 14px;
+            color: #7f8c8d;
         }
         
         .balance-table .total-row {
-            font-weight: 600;
+            font-weight: 700;
             background: #e8f5e9;
-            border-top: 2px solid #4caf50;
+            border-top: 3px solid #27ae60;
         }
         
         .balance-table .inheritance-date {
-            background: #fff8e1;
-            font-weight: 600;
+            background: #2c3e50;
+            color: white;
+            font-weight: 700;
         }
         
         .balance-positive {
-            color: #2e7d32;
-            font-weight: 600;
+            color: #27ae60;
+            font-weight: 700;
         }
         
         .balance-negative {
-            color: #c62828;
-            font-weight: 600;
+            color: #e74c3c;
+            font-weight: 700;
         }
         
         .balance-change {
-            font-size: 11px;
-            color: #586069;
+            font-size: 12px;
+            color: #7f8c8d;
             display: block;
-            margin-top: 2px;
+            margin-top: 3px;
         }
         
         .balance-interpolated {
             font-style: italic;
-            color: #7986cb;
+            color: #9b59b6;
         }
         
-        /* 家系図スタイル */
+        /* 家系図スタイル（改良版） */
         .family-tree-wrapper {
             background: white;
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            padding: 40px;
-            margin: 20px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 50px;
+            margin: 25px 0;
             overflow-x: auto;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
         }
         
         .family-tree-title {
             text-align: center;
-            font-size: 2em;
-            font-weight: 700;
-            margin-bottom: 40px;
-            color: #1a237e;
+            font-size: 2.2em;
+            font-weight: 800;
+            margin-bottom: 50px;
+            color: #2c3e50;
         }
         
-        .family-tree {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 600px;
-            position: relative;
-            padding: 30px;
-            min-width: max-content;
-        }
-        
-        .generation {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+        .family-tree-svg {
             width: 100%;
-            margin: 50px 0;
-            position: relative;
+            min-height: 700px;
+            display: block;
         }
         
-        .generation-label {
-            position: absolute;
-            left: -120px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-weight: 700;
-            color: #586069;
-            font-size: 14px;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            background: white;
-            padding: 10px 5px;
-            border: 1px solid #e1e4e8;
-            border-radius: 4px;
-        }
-        
-        .family-member {
-            background: white;
-            border: 3px solid #3949ab;
-            border-radius: 12px;
-            padding: 20px;
-            min-width: 220px;
-            max-width: 280px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            transition: all 0.3s ease;
-            z-index: 10;
+        .member-box {
+            fill: white;
+            stroke: #3498db;
+            stroke-width: 3;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .family-member:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        .member-box:hover {
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.2));
         }
         
-        .family-member.deceased {
-            border-color: #f44336;
-            background: #ffebee;
+        .member-box.deceased {
+            fill: #fadbd8;
+            stroke: #e74c3c;
         }
         
-        .family-member.male {
-            border-style: solid;
+        .member-box.male {
+            /* 男性は角張った四角形 */
         }
         
-        .family-member.female {
-            border-radius: 60px 12px 60px 12px;
+        .member-box.female {
+            rx: 35;
+            ry: 35;
+        }
+        
+        .member-text {
+            font-family: 'Yu Gothic', 'Meiryo', sans-serif;
+            font-size: 15px;
+            fill: #34495e;
         }
         
         .member-name {
+            font-weight: 800;
+            font-size: 18px;
+            fill: #2c3e50;
+        }
+        
+        .relation-line {
+            stroke: #95a5a6;
+            stroke-width: 3;
+            fill: none;
+        }
+        
+        .spouse-line {
+            stroke: #e91e63;
+            stroke-width: 4;
+        }
+        
+        /* 判定基準説明（改良版） */
+        .criteria-explanation {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        
+        .criteria-explanation h4 {
+            color: #2c3e50;
+            margin-bottom: 20px;
             font-size: 1.3em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-align: center;
-            color: #1a237e;
         }
         
-        .member-info {
-            font-size: 0.9em;
-            color: #586069;
-            line-height: 1.6;
+        .criteria-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
         
-        .member-info-row {
-            margin: 5px 0;
+        .criteria-category {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .criteria-category h5 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .criteria-list {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
         }
         
-        .member-info-label {
-            font-weight: 600;
-            color: #24292e;
+        .criteria-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px;
+            background: #fafbfc;
+            border-radius: 6px;
+            font-size: 0.95em;
         }
         
-        .address-info {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e1e4e8;
-            font-size: 0.85em;
+        .criteria-badge {
+            flex-shrink: 0;
         }
         
-        .address-status {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            font-weight: 700;
-            margin-left: 8px;
-            text-transform: uppercase;
+        /* ズームコントロール（新規追加） */
+        .zoom-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
         }
         
-        .same-address {
-            background: #c8e6c9;
-            color: #1b5e20;
+        .zoom-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            transition: all 0.2s;
         }
         
-        .different-address {
-            background: #fff3cd;
-            color: #f57c00;
+        .zoom-btn:hover {
+            background: #f8f9fa;
+            border-color: #3498db;
+            color: #3498db;
         }
         
         /* 印刷スタイル */
@@ -884,12 +916,12 @@
             }
             
             .data-table {
-                font-size: 10px;
+                font-size: 11px;
             }
             
             @page {
-                size: A4 landscape;
-                margin: 10mm;
+                size: A3 landscape;
+                margin: 15mm;
             }
         }
         
@@ -899,22 +931,17 @@
                 grid-template-columns: 1fr;
             }
             
-            .family-tree {
-                transform: scale(0.8);
-                transform-origin: top center;
-            }
-            
             .tab {
-                font-size: 13px;
-                padding: 10px 16px;
+                font-size: 14px;
+                padding: 12px 20px;
             }
             
             .data-table {
-                font-size: 12px;
+                font-size: 13px;
             }
             
             .data-table th, .data-table td {
-                padding: 8px;
+                padding: 10px;
             }
         }
         
@@ -930,15 +957,23 @@
             display: none;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3949ab;
+            width: 70px;
+            height: 70px;
+            border: 6px solid #ecf0f1;
+            border-top: 6px solid #3498db;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+        }
+        
+        .loading-text {
+            font-size: 18px;
+            color: #2c3e50;
+            font-weight: 600;
         }
         
         @keyframes spin {
@@ -956,30 +991,56 @@
         .hidden { display: none !important; }
         
         .highlight-row {
-            background: #fff8e1 !important;
-            font-weight: 600;
+            background: #fef5e7 !important;
+            font-weight: 700;
         }
         
         .danger-highlight {
-            background: #ffebee !important;
-            color: #c62828;
+            background: #fadbd8 !important;
+            color: #e74c3c;
         }
         
         .success-highlight {
-            background: #e8f5e9 !important;
-            color: #2e7d32;
+            background: #d5f4e6 !important;
+            color: #27ae60;
+        }
+        
+        /* 信頼度表示（新規追加） */
+        .confidence-indicator {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .confidence-high {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+        
+        .confidence-medium {
+            background: #fef5e7;
+            color: #f39c12;
+        }
+        
+        .confidence-low {
+            background: #fadbd8;
+            color: #e74c3c;
         }
     </style>
 </head>
 <body>
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
+        <div class="loading-text">データを分析しています...</div>
     </div>
     
     <div class="container">
         <div class="header">
-            <h1>相続税調査分析システム</h1>
-            <p>高精度な資金移動検出と原資不明判定により、相続税調査に必要な分析を実施します</p>
+            <h1>相続税調査分析システム v3</h1>
+            <p>高精度な資金移動検出と家族関係分析により、相続税調査に必要な網羅的分析を実施します</p>
         </div>
         
         <div class="upload-section">
@@ -1021,17 +1082,17 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
             </div>
-            <p id="progressText" style="color: #586069; font-weight: 500;">0/3 ファイルがアップロードされました</p>
+            <p id="progressText" style="color: #7f8c8d; font-weight: 600;">0/3 ファイルがアップロードされました</p>
             
             <div class="config-section">
-                <h3 class="section-title" style="font-size: 1.2em;">⚙️ 分析設定</h3>
+                <h3 class="section-title" style="font-size: 1.3em;">⚙️ 分析設定</h3>
                 <div class="config-grid">
                     <div class="config-item">
                         <label>
                             <span>📅</span> 分析基準年
                         </label>
                         <select id="baseYear">
-                            <option value="2024">2024年</option>
+                            <option value="2024" selected>2024年</option>
                             <option value="2023">2023年</option>
                             <option value="2022">2022年</option>
                             <option value="2021">2021年</option>
@@ -1128,7 +1189,8 @@
                 transfers: [],
                 suspiciousTransfers: [],
                 unknownSources: [],
-                annotations: new Map()
+                annotations: new Map(),
+                familyTree: null
             }
         };
         
@@ -1216,7 +1278,8 @@
                     transfers: [],
                     suspiciousTransfers: [],
                     unknownSources: [],
-                    annotations: new Map()
+                    annotations: new Map(),
+                    familyTree: null
                 }
             };
             
@@ -1354,7 +1417,8 @@
                         description: row[11] || '',
                         balance: parseFloat(row[12]) || 0,
                         flags: [],
-                        annotations: []
+                        annotations: [],
+                        confidence: 'high' // 信頼度追加
                     });
                 }
             }
@@ -1362,12 +1426,11 @@
             return transactions.sort((a, b) => {
                 const dateCompare = new Date(a.date) - new Date(b.date);
                 if (dateCompare !== 0) return dateCompare;
-                // 同日の場合は時刻でソート
                 return (a.time || '00:00:00').localeCompare(b.time || '00:00:00');
             });
         }
         
-        // 家族データ解析
+        // 家族データ解析（改良版）
         function parseFamilyData(rawData) {
             if (!rawData || rawData.length < 2) return [];
             
@@ -1379,18 +1442,19 @@
                         name: row[0] || '',
                         relationship: row[1] || '',
                         birthDate: row[2] || '',
-                        inheritanceInfo: row[3] || ''
+                        inheritanceInfo: row[3] || '',
+                        parent: null,
+                        children: [],
+                        spouse: null
                     };
                     
                     // 被相続人の判定と相続開始日の取得
                     if (member.relationship.includes('被相続人')) {
                         member.isDeceased = true;
-                        // D列に日付形式があれば相続開始日として設定
                         if (member.inheritanceInfo && member.inheritanceInfo.match(/\d{4}-\d{2}-\d{2}/)) {
                             systemData.inheritanceDate = member.inheritanceInfo;
                         }
                     } else {
-                        // その他の人は年齢として扱う
                         const ageMatch = member.inheritanceInfo.match(/(\d+)歳?/);
                         if (ageMatch) {
                             member.ageAtInheritance = parseInt(ageMatch[1]);
@@ -1409,11 +1473,61 @@
                         member.gender = 'unknown';
                     }
                     
+                    // 世代判定
+                    if (member.isDeceased || rel.includes('配偶者')) {
+                        member.generation = 0;
+                    } else if (rel.includes('長男') || rel.includes('次男') || rel.includes('三男') ||
+                               rel.includes('長女') || rel.includes('次女') || rel.includes('三女') ||
+                               (rel.includes('子') && !rel.includes('孫'))) {
+                        member.generation = 1;
+                    } else if (rel.includes('孫')) {
+                        member.generation = 2;
+                        const parentMatch = rel.match(/(.+)の子/);
+                        if (parentMatch) {
+                            member.parentRelation = parentMatch[1];
+                        }
+                    } else {
+                        member.generation = 3;
+                    }
+                    
                     family.push(member);
                 }
             }
             
+            buildFamilyRelations(family);
             return family;
+        }
+        
+        // 家族関係構築
+        function buildFamilyRelations(family) {
+            const deceased = family.find(f => f.isDeceased);
+            if (!deceased) return;
+            
+            const spouse = family.find(f => f.relationship.includes('配偶者'));
+            if (spouse) {
+                deceased.spouse = spouse.name;
+                spouse.spouse = deceased.name;
+            }
+            
+            family.forEach(member => {
+                if (member.generation === 1) {
+                    member.parent = deceased.name;
+                    if (!deceased.children) deceased.children = [];
+                    deceased.children.push(member.name);
+                    
+                    if (spouse) {
+                        if (!spouse.children) spouse.children = [];
+                        spouse.children.push(member.name);
+                    }
+                } else if (member.generation === 2 && member.parentRelation) {
+                    const parent = family.find(f => f.relationship.includes(member.parentRelation));
+                    if (parent) {
+                        member.parent = parent.name;
+                        if (!parent.children) parent.children = [];
+                        parent.children.push(member.name);
+                    }
+                }
+            });
         }
         
         // 住所データ解析
@@ -1433,7 +1547,6 @@
                 }
             }
             
-            // 終了日が無い場合の補完処理
             const peopleNames = [...new Set(addresses.map(a => a.name))];
             peopleNames.forEach(name => {
                 const personAddresses = addresses
@@ -1452,7 +1565,7 @@
             return addresses;
         }
         
-        // 改良版データ分析
+        // データ分析
         async function analyzeData() {
             const inheritanceDate = systemData.inheritanceDate;
             const largeAmountThreshold = parseInt(document.getElementById('largeAmountThreshold').value);
@@ -1461,25 +1574,17 @@
             const transferErrorRate = parseInt(document.getElementById('transferErrorRate').value) / 100;
             const inheritancePeriod = parseInt(document.getElementById('inheritancePeriod').value);
             
-            // 取引フラグ付けと注記作成
             addTransactionFlags(inheritanceDate, largeAmountThreshold, unknownSourceThreshold, inheritancePeriod);
-            
-            // 残高推移分析（補完機能付き）
             analyzeBalanceHistory();
-            
-            // 高精度資金移動検出
-            detectMoneyTransfers(transferDays, transferErrorRate);
-            
-            // 原資不明取引検出（摘要空白含む）
+            detectMoneyTransfersAdvanced(transferDays, transferErrorRate);
             detectUnknownSources(unknownSourceThreshold);
-            
-            // 注記情報の生成
             generateAnnotations();
         }
         
-        // 改良版取引フラグ付け
+        // 取引フラグ付け（改良版）
         function addTransactionFlags(inheritanceDate, largeAmountThreshold, unknownSourceThreshold, inheritancePeriod) {
             const inhDate = new Date(inheritanceDate);
+            const deceased = systemData.family.find(f => f.isDeceased);
             
             systemData.transactions.forEach(tx => {
                 tx.flags = [];
@@ -1487,19 +1592,23 @@
                 const amount = Math.max(tx.withdrawal, tx.deposit);
                 const txDate = new Date(tx.date);
                 
+                const hasTransaction = tx.withdrawal > 0 || tx.deposit > 0;
+                
                 // 大額取引
-                if (amount >= largeAmountThreshold) {
+                if (hasTransaction && amount >= largeAmountThreshold) {
                     tx.flags.push('大額取引');
                     tx.annotations.push(`★大額取引(${amount.toLocaleString()}円)`);
+                    tx.confidence = 'high';
                 }
                 
-                // 摘要空白チェック（重要）
-                if (!tx.description || tx.description.trim() === '') {
+                // 摘要空白チェック
+                if (hasTransaction && (!tx.description || tx.description.trim() === '')) {
                     tx.flags.push('摘要空白');
                     tx.annotations.push('★摘要欄空白(窓口取引の可能性)');
+                    tx.confidence = 'medium';
                 }
                 
-                // 原資不明（改良版）
+                // 原資不明
                 if (tx.deposit >= unknownSourceThreshold) {
                     if (!tx.description || 
                         tx.description.trim() === '' || 
@@ -1509,18 +1618,19 @@
                         
                         tx.flags.push('原資不明');
                         tx.annotations.push(`★原資不明入金(${tx.deposit.toLocaleString()}円)`);
+                        tx.confidence = tx.description ? 'medium' : 'high';
                         
-                        // 住所移動直後チェック
                         const recentMove = checkRecentAddressChange(tx.name, tx.date, 30);
                         if (recentMove) {
                             tx.annotations.push('★住所移動後30日以内の入金');
+                            tx.confidence = 'high';
                         }
                     }
                 }
                 
                 // 相続前後期間
                 const daysDiff = Math.abs(txDate - inhDate) / (1000 * 60 * 60 * 24);
-                if (daysDiff <= inheritancePeriod) {
+                if (hasTransaction && daysDiff <= inheritancePeriod) {
                     tx.flags.push('相続前後');
                     if (amount >= 100000) {
                         tx.annotations.push(`★相続前後${Math.round(daysDiff)}日の取引`);
@@ -1537,7 +1647,7 @@
                     tx.annotations.push('★口座解約');
                 }
                 
-                // 未成年判定（改良版）
+                // 未成年判定
                 const person = systemData.family.find(f => f.name === tx.name);
                 if (person && person.birthDate) {
                     const age = calculateAge(person.birthDate, tx.date);
@@ -1545,7 +1655,6 @@
                         tx.flags.push('未成年');
                         tx.annotations.push(`★未成年取引(${age}歳)`);
                         
-                        // 口座開設時の管理者推定
                         if (tx.flags.includes('口座開設')) {
                             const cohabitants = getCohabitantsAtDate(tx.name, tx.date);
                             if (cohabitants.length > 0) {
@@ -1556,7 +1665,7 @@
                 }
                 
                 // 被相続人同居判定
-                if (isSameAddressAsDeceased(tx.name, tx.date)) {
+                if (deceased && tx.name !== deceased.name && isSameAddressAsDeceased(tx.name, tx.date)) {
                     tx.flags.push('被相続人同居');
                     tx.annotations.push('★被相続人と同居');
                 }
@@ -1636,14 +1745,13 @@
             return null;
         }
         
-        // 改良版残高推移分析（補完機能付き）
+        // 残高推移分析（補完機能付き）
         function analyzeBalanceHistory() {
             const baseYear = parseInt(document.getElementById('baseYear').value);
             const inheritanceDate = systemData.inheritanceDate;
             
             systemData.processedData.balanceByPerson = {};
             
-            // 人ごとにグループ化
             systemData.family.forEach(person => {
                 const personData = {
                     name: person.name,
@@ -1652,10 +1760,8 @@
                     inheritanceTotal: 0
                 };
                 
-                // その人の全取引を取得
                 const personTx = systemData.transactions.filter(tx => tx.name === person.name);
                 
-                // 口座ごとにグループ化
                 personTx.forEach(tx => {
                     const accountKey = `${tx.bank}_${tx.branch}_${tx.accountNumber}`;
                     if (!personData.accounts[accountKey]) {
@@ -1673,7 +1779,6 @@
                     }
                     personData.accounts[accountKey].transactions.push(tx);
                     
-                    // 口座開設・解約日の記録
                     if (tx.flags.includes('口座開設')) {
                         personData.accounts[accountKey].openDate = tx.date;
                     }
@@ -1682,9 +1787,7 @@
                     }
                 });
                 
-                // 各口座の年末残高を計算（補完機能付き）
                 Object.values(personData.accounts).forEach(account => {
-                    // 5年分の年末残高
                     for (let year = baseYear - 4; year <= baseYear; year++) {
                         const yearEnd = `${year}-12-31`;
                         const balance = getBalanceAtDate(account.transactions, yearEnd, true);
@@ -1698,7 +1801,6 @@
                         }
                     }
                     
-                    // 相続開始日残高
                     const inhBalance = getBalanceAtDate(account.transactions, inheritanceDate, true);
                     account.inheritanceBalance = inhBalance;
                     if (inhBalance.value !== null) {
@@ -1710,20 +1812,16 @@
             });
         }
         
-        // 改良版：特定日の残高取得（補完機能付き）
+        // 特定日の残高取得（補完機能付き）
         function getBalanceAtDate(transactions, targetDate, withInterpolation = false) {
             const target = new Date(targetDate);
             let result = { value: null, isInterpolated: false };
             
-            // 残高が記録されている取引のみ
             const balanceTx = transactions.filter(tx => tx.balance > 0);
             if (balanceTx.length === 0) return result;
             
-            // 対象日以前で最も近い残高
             let closestBefore = null;
             let closestBeforeDate = null;
-            
-            // 対象日以降で最も近い残高
             let closestAfter = null;
             let closestAfterDate = null;
             
@@ -1743,11 +1841,9 @@
                 }
             });
             
-            // 対象日以前に残高があればそれを使用
             if (closestBefore) {
                 result.value = closestBefore.balance;
                 
-                // 年末時点の補完チェック
                 if (withInterpolation && targetDate.endsWith('-12-31')) {
                     const yearEnd = new Date(targetDate);
                     const daysDiff = (yearEnd - closestBeforeDate) / (1000 * 60 * 60 * 24);
@@ -1759,14 +1855,12 @@
                 return result;
             }
             
-            // 口座開設前なら0
             const firstTx = transactions[0];
             if (firstTx && new Date(firstTx.date) > target) {
                 result.value = 0;
                 return result;
             }
             
-            // 対象日以降の残高を補完として使用
             if (closestAfter && withInterpolation) {
                 result.value = closestAfter.balance;
                 result.isInterpolated = true;
@@ -1776,121 +1870,127 @@
             return result;
         }
         
-        // 改良版：高精度資金移動検出
-        function detectMoneyTransfers(maxDays, errorRate) {
+        // 高精度資金移動検出（多対多マッチング対応）
+        function detectMoneyTransfersAdvanced(maxDays, errorRate) {
             systemData.processedData.transfers = [];
             systemData.processedData.suspiciousTransfers = [];
             
-            // 出金取引を抽出
             const withdrawals = systemData.transactions.filter(tx => tx.withdrawal > 0);
+            const deposits = systemData.transactions.filter(tx => tx.deposit > 0);
+            
+            const usedDeposits = new Set();
+            const allMatches = [];
             
             withdrawals.forEach(withdrawal => {
                 const wDate = new Date(withdrawal.date);
                 const wAmount = withdrawal.withdrawal;
                 
-                // 対象期間内の入金を検索
-                const potentialDeposits = systemData.transactions.filter(tx => {
-                    if (tx.deposit === 0) return false;
+                deposits.forEach(deposit => {
+                    if (usedDeposits.has(deposit.id)) return;
                     
-                    const dDate = new Date(tx.date);
-                    const daysDiff = (dDate - wDate) / (1000 * 60 * 60 * 24);
-                    
-                    // 日数条件
-                    if (daysDiff < 0 || daysDiff > maxDays) return false;
-                    
-                    // 金額誤差条件
-                    const amountDiff = Math.abs(tx.deposit - wAmount) / wAmount;
-                    if (amountDiff > errorRate) return false;
-                    
-                    return true;
-                });
-                
-                // マッチング候補をスコア付けして評価
-                const matches = potentialDeposits.map(deposit => {
                     const dDate = new Date(deposit.date);
                     const daysDiff = (dDate - wDate) / (1000 * 60 * 60 * 24);
+                    
+                    if (daysDiff < 0 || daysDiff > maxDays) return;
+                    
                     const amountDiff = Math.abs(deposit.deposit - wAmount);
                     const amountDiffRate = amountDiff / wAmount;
                     
-                    // スコア計算（低いほど良い）
-                    let score = daysDiff * 10 + amountDiffRate * 100;
+                    if (amountDiffRate > errorRate) return;
                     
-                    // 同一人物間なら低スコア
+                    let score = 0;
+                    score += daysDiff * 5;
+                    score += amountDiffRate * 100;
+                    
                     if (withdrawal.name === deposit.name) {
                         score += 50;
                     }
                     
-                    // 親子関係チェック
                     const isFamily = checkFamilyRelation(withdrawal.name, deposit.name);
                     if (isFamily) {
                         score -= 20;
                     }
                     
-                    // 時刻考慮（同日の場合）
                     if (daysDiff === 0 && withdrawal.time && deposit.time) {
-                        const wTime = withdrawal.time.split(':').map(Number);
-                        const dTime = deposit.time.split(':').map(Number);
-                        const wMinutes = wTime[0] * 60 + wTime[1];
-                        const dMinutes = dTime[0] * 60 + dTime[1];
+                        const wTime = parseTime(withdrawal.time);
+                        const dTime = parseTime(deposit.time);
                         
-                        if (dMinutes < wMinutes) {
-                            score += 100; // 入金が出金より前は不自然
+                        if (dTime < wTime) {
+                            score += 100;
+                        } else {
+                            const timeDiff = dTime - wTime;
+                            if (timeDiff < 60) {
+                                score -= 10;
+                            }
                         }
                     }
                     
-                    return {
+                    allMatches.push({
+                        withdrawal: withdrawal,
                         deposit: deposit,
                         score: score,
                         daysDiff: daysDiff,
                         amountDiff: amountDiff,
                         amountDiffRate: amountDiffRate,
                         isFamily: isFamily
-                    };
+                    });
                 });
+            });
+            
+            allMatches.sort((a, b) => a.score - b.score);
+            
+            const usedWithdrawals = new Set();
+            
+            allMatches.forEach(match => {
+                if (usedWithdrawals.has(match.withdrawal.id) || usedDeposits.has(match.deposit.id)) {
+                    return;
+                }
                 
-                // 最良のマッチを選択
-                if (matches.length > 0) {
-                    matches.sort((a, b) => a.score - b.score);
-                    const bestMatch = matches[0];
+                if (match.score < 100) {
+                    usedWithdrawals.add(match.withdrawal.id);
+                    usedDeposits.add(match.deposit.id);
                     
                     const transfer = {
-                        date: withdrawal.date,
-                        from: withdrawal.name,
-                        to: bestMatch.deposit.name,
-                        amount: withdrawal.withdrawal,
-                        fromBank: `${withdrawal.bank} ${withdrawal.branch}`,
-                        toBank: `${bestMatch.deposit.bank} ${bestMatch.deposit.branch}`,
-                        fromAccount: withdrawal.accountNumber,
-                        toAccount: bestMatch.deposit.accountNumber,
-                        depositDate: bestMatch.deposit.date,
-                        daysDiff: bestMatch.daysDiff,
-                        amountDiff: bestMatch.amountDiff,
-                        amountDiffRate: bestMatch.amountDiffRate,
-                        isFamily: bestMatch.isFamily,
-                        score: bestMatch.score
+                        date: match.withdrawal.date,
+                        from: match.withdrawal.name,
+                        to: match.deposit.name,
+                        amount: match.withdrawal.withdrawal,
+                        fromBank: `${match.withdrawal.bank} ${match.withdrawal.branch}`,
+                        toBank: `${match.deposit.bank} ${match.deposit.branch}`,
+                        fromAccount: match.withdrawal.accountNumber,
+                        toAccount: match.deposit.accountNumber,
+                        depositDate: match.deposit.date,
+                        daysDiff: match.daysDiff,
+                        amountDiff: match.amountDiff,
+                        amountDiffRate: match.amountDiffRate,
+                        isFamily: match.isFamily,
+                        score: match.score,
+                        confidence: match.score < 50 ? 'high' : match.score < 80 ? 'medium' : 'low'
                     };
                     
-                    // 疑わしい資金移動の判定
-                    if (bestMatch.score < 30 && withdrawal.name !== bestMatch.deposit.name) {
-                        systemData.processedData.transfers.push(transfer);
-                        
-                        // フラグとアノテーション追加
-                        withdrawal.flags.push('資金移動(出)');
-                        bestMatch.deposit.flags.push('資金移動(入)');
-                        
-                        const annotation = `★資金移動: ${withdrawal.name}→${bestMatch.deposit.name} (${bestMatch.daysDiff}日後, 誤差${(bestMatch.amountDiffRate * 100).toFixed(1)}%)`;
-                        withdrawal.annotations.push(annotation);
-                        bestMatch.deposit.annotations.push(annotation);
-                        
-                        // 特に疑わしいパターン
-                        if (bestMatch.isFamily && bestMatch.daysDiff <= 1 && bestMatch.amountDiffRate < 0.01) {
-                            systemData.processedData.suspiciousTransfers.push(transfer);
-                            withdrawal.annotations.push('★要注意：家族間即日資金移動');
-                            bestMatch.deposit.annotations.push('★要注意：家族間即日資金移動');
-                        }
+                    systemData.processedData.transfers.push(transfer);
+                    
+                    match.withdrawal.flags.push('資金移動(出)');
+                    match.deposit.flags.push('資金移動(入)');
+                    
+                    const annotation = `★資金移動: ${match.withdrawal.name}→${match.deposit.name} (${match.daysDiff}日後, 誤差${(match.amountDiffRate * 100).toFixed(1)}%)`;
+                    match.withdrawal.annotations.push(annotation);
+                    match.deposit.annotations.push(annotation);
+                    
+                    if (match.isFamily && match.daysDiff <= 1 && match.amountDiffRate < 0.01) {
+                        systemData.processedData.suspiciousTransfers.push(transfer);
+                        match.withdrawal.annotations.push('★要注意：家族間即日資金移動');
+                        match.deposit.annotations.push('★要注意：家族間即日資金移動');
                     }
                 }
             });
+        }
+        
+        // 時刻パース
+        function parseTime(timeStr) {
+            if (!timeStr) return 0;
+            const parts = timeStr.split(':');
+            return parseInt(parts[0]) * 60 + parseInt(parts[1] || 0);
         }
         
         // 家族関係チェック
@@ -1900,26 +2000,25 @@
             
             if (!person1 || !person2) return false;
             
-            // 親子関係の判定（続柄から推定）
-            const rel1 = person1.relationship;
-            const rel2 = person2.relationship;
-            
-            // 被相続人と配偶者
-            if ((person1.isDeceased && rel2.includes('配偶者')) ||
-                (person2.isDeceased && rel1.includes('配偶者'))) {
+            if (person1.spouse === name2 || person2.spouse === name1) {
                 return true;
             }
             
-            // 親子関係
-            if ((rel1.includes('子') && !rel1.includes('孫')) || 
-                (rel2.includes('子') && !rel2.includes('孫'))) {
+            if (person1.children && person1.children.includes(name2)) {
+                return true;
+            }
+            if (person2.children && person2.children.includes(name1)) {
+                return true;
+            }
+            
+            if (person1.parent && person1.parent === person2.parent) {
                 return true;
             }
             
             return false;
         }
         
-        // 改良版：原資不明取引検出
+        // 原資不明取引検出
         function detectUnknownSources(threshold) {
             systemData.processedData.unknownSources = [];
             
@@ -1927,38 +2026,42 @@
                 if (tx.deposit >= threshold) {
                     let isUnknown = false;
                     let reason = '';
+                    let confidence = 'low';
                     
-                    // 摘要空白（最重要）
-                    if (!tx.description || tx.description.trim() === '') {
-                        isUnknown = true;
-                        reason = '摘要欄空白（窓口取引）';
-                    }
-                    // 一般的な入金表記
-                    else if (tx.description === '入金' || 
-                             tx.description === '現金' || 
-                             tx.description === '現金入金' ||
-                             tx.description.includes('ATM')) {
-                        isUnknown = true;
-                        reason = `入金種別: ${tx.description}`;
+                    const hasTransaction = tx.withdrawal > 0 || tx.deposit > 0;
+                    
+                    if (hasTransaction) {
+                        if (!tx.description || tx.description.trim() === '') {
+                            isUnknown = true;
+                            reason = '摘要欄空白（窓口取引）';
+                            confidence = 'high';
+                        }
+                        else if (tx.description === '入金' || 
+                                 tx.description === '現金' || 
+                                 tx.description === '現金入金' ||
+                                 tx.description.includes('ATM')) {
+                            isUnknown = true;
+                            reason = `入金種別: ${tx.description}`;
+                            confidence = 'medium';
+                        }
                     }
                     
                     if (isUnknown) {
                         systemData.processedData.unknownSources.push({
                             ...tx,
-                            reason: reason
+                            reason: reason,
+                            confidence: confidence
                         });
                         
                         if (!tx.flags.includes('原資不明')) {
                             tx.flags.push('原資不明');
                         }
                         
-                        // 追加の疑義チェック
                         const recentMove = checkRecentAddressChange(tx.name, tx.date, 30);
                         if (recentMove) {
                             tx.annotations.push('★住所移動直後の原資不明入金（要確認）');
                         }
                         
-                        // 未成年への入金
                         if (tx.flags.includes('未成年')) {
                             tx.annotations.push('★未成年口座への原資不明入金（贈与の可能性）');
                         }
@@ -2015,10 +2118,68 @@
                     <ul style="margin: 10px 0; padding-left: 20px;">
                         <li>総取引件数：<strong>${totalTx}</strong>件</li>
                         <li>要注意取引：<strong>${flaggedTx}</strong>件（${(flaggedTx/totalTx*100).toFixed(1)}%）</li>
-                        <li>資金移動検出：<strong>${transfers}</strong>件${suspiciousTransfers > 0 ? ` <span style="color: #c62828;">（うち要注意 ${suspiciousTransfers}件）</span>` : ''}</li>
+                        <li>資金移動検出：<strong>${transfers}</strong>件${suspiciousTransfers > 0 ? ` <span style="color: #e74c3c;">（うち要注意 ${suspiciousTransfers}件）</span>` : ''}</li>
                         <li>原資不明取引：<strong>${unknownSources}</strong>件</li>
-                        <li>摘要空白取引：<strong>${blankMemo}</strong>件 <span style="color: #f57c00;">（窓口取引の可能性）</span></li>
+                        <li>摘要空白取引：<strong>${blankMemo}</strong>件 <span style="color: #f39c12;">（窓口取引の可能性）</span></li>
                     </ul>
+                </div>
+                
+                <div class="criteria-explanation">
+                    <h4>🏷️ 判定基準の説明</h4>
+                    <div class="criteria-categories">
+                        <div class="criteria-category">
+                            <h5>💰 金額関連</h5>
+                            <div class="criteria-list">
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-large-amount criteria-badge">大額取引</span>
+                                    <span>設定金額以上の入出金（贈与・資産隠し）</span>
+                                </div>
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-unknown-source criteria-badge">原資不明</span>
+                                    <span>入金元が特定できない取引（名義預金等）</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="criteria-category">
+                            <h5>💸 資金移動</h5>
+                            <div class="criteria-list">
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-money-shift criteria-badge">資金移動</span>
+                                    <span>人物間の資金シフト（贈与の可能性）</span>
+                                </div>
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-inheritance-period criteria-badge">相続前後</span>
+                                    <span>相続開始日前後の取引（財産移動）</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="criteria-category">
+                            <h5>👤 人物関連</h5>
+                            <div class="criteria-list">
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-minor criteria-badge">未成年</span>
+                                    <span>20歳未満の者による取引（管理者確認）</span>
+                                </div>
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-cohabit criteria-badge">被相続人同居</span>
+                                    <span>被相続人と同住所（小規模宅地特例）</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="criteria-category">
+                            <h5>📝 その他</h5>
+                            <div class="criteria-list">
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-blank-memo criteria-badge">摘要空白</span>
+                                    <span>摘要欄が空白（窓口取引・現金移動）</span>
+                                </div>
+                                <div class="criteria-item">
+                                    <span class="annotation-badge badge-account-open criteria-badge">口座開設</span>
+                                    <span>新規口座開設（資産分散の可能性）</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             `;
             
@@ -2088,14 +2249,14 @@
             container.innerHTML = html;
         }
         
-        // 残高推移表ビュー（改良版）
+        // 残高推移表ビュー
         function updateBalanceView() {
             const container = document.getElementById('balance-content');
             const baseYear = parseInt(document.getElementById('baseYear').value);
             const inheritanceDate = systemData.inheritanceDate;
             
             let html = '<h3 style="margin: 20px 0;">💰 各人別残高推移表</h3>';
-            html += '<p style="color: #7986cb; font-style: italic; margin-bottom: 20px;">※ 斜体の数値は年内最終取引日の残高を表示（補完値）</p>';
+            html += '<p style="color: #9b59b6; font-style: italic; margin-bottom: 20px;">※ 斜体の数値は年内最終取引日の残高を表示（補完値）</p>';
             
             Object.entries(systemData.processedData.balanceByPerson).forEach(([name, personData]) => {
                 const person = systemData.family.find(f => f.name === name);
@@ -2108,17 +2269,15 @@
                             <table class="balance-table">
                                 <thead>
                                     <tr>
-                                        <th style="min-width: 220px;">口座情報</th>
+                                        <th style="min-width: 240px;">口座情報</th>
                 `;
                 
-                // 年度ヘッダー
                 for (let year = baseYear - 4; year <= baseYear; year++) {
-                    html += `<th style="min-width: 140px;">${year}年末</th>`;
+                    html += `<th style="min-width: 150px;">${year}年末</th>`;
                 }
-                html += `<th class="inheritance-date" style="min-width: 160px;">相続開始日<br>(${inheritanceDate})</th>`;
+                html += `<th class="inheritance-date" style="min-width: 170px;">相続開始日<br>(${inheritanceDate})</th>`;
                 html += '</tr></thead><tbody>';
                 
-                // 各口座の残高
                 Object.values(personData.accounts).forEach(account => {
                     html += '<tr>';
                     html += `<td class="account-row">
@@ -2161,7 +2320,6 @@
                     html += '</tr>';
                 });
                 
-                // 合計行
                 html += '<tr class="total-row">';
                 html += '<td>合計</td>';
                 
@@ -2176,7 +2334,7 @@
             container.innerHTML = html;
         }
         
-        // 資金移動ビュー（改良版）
+        // 資金移動ビュー
         function updateTransfersView() {
             const container = document.getElementById('transfers-content');
             const transfers = systemData.processedData.transfers;
@@ -2191,7 +2349,7 @@
                 <div class="alert-card ${suspicious.length > 0 ? 'danger' : 'warning'}">
                     <h3>💸 資金移動分析結果（${transfers.length}件）</h3>
                     <p>設定期間内（${document.getElementById('transferDays').value}日以内）で金額誤差${document.getElementById('transferErrorRate').value}%以内の入出金を検出しました。</p>
-                    ${suspicious.length > 0 ? `<p style="color: #c62828; font-weight: 600;">★ 特に注意が必要な資金移動が${suspicious.length}件検出されました。</p>` : ''}
+                    ${suspicious.length > 0 ? `<p style="color: #e74c3c; font-weight: 700;">★ 特に注意が必要な資金移動が${suspicious.length}件検出されました。</p>` : ''}
                 </div>
             `;
             
@@ -2211,6 +2369,7 @@
                                         <th>入金日</th>
                                         <th>日数</th>
                                         <th>誤差</th>
+                                        <th>信頼度</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2227,6 +2386,7 @@
                             <td>${transfer.depositDate}</td>
                             <td class="text-center">${transfer.daysDiff}日</td>
                             <td class="text-center">${(transfer.amountDiffRate * 100).toFixed(1)}%</td>
+                            <td><span class="confidence-indicator confidence-${transfer.confidence}">${transfer.confidence}</span></td>
                         </tr>
                     `;
                 });
@@ -2249,6 +2409,7 @@
                                     <th>金額</th>
                                     <th>入金日</th>
                                     <th>誤差</th>
+                                    <th>信頼度</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2271,6 +2432,7 @@
                         <td class="text-right">${transfer.amount.toLocaleString()}円</td>
                         <td>${transfer.depositDate}</td>
                         <td class="text-right">${transfer.amountDiff.toLocaleString()}円</td>
+                        <td><span class="confidence-indicator confidence-${transfer.confidence}">${transfer.confidence}</span></td>
                     </tr>
                 `;
             });
@@ -2279,7 +2441,7 @@
             container.innerHTML = html;
         }
         
-        // 原資不明ビュー（改良版）
+        // 原資不明ビュー
         function updateUnknownView() {
             const container = document.getElementById('unknown-content');
             const unknownSources = systemData.processedData.unknownSources;
@@ -2289,7 +2451,6 @@
                 return;
             }
             
-            // 理由別に分類
             const byReason = {};
             unknownSources.forEach(tx => {
                 if (!byReason[tx.reason]) {
@@ -2314,7 +2475,6 @@
                 </div>
             `;
             
-            // 理由別詳細
             Object.entries(byReason).forEach(([reason, txs]) => {
                 html += `
                     <div class="info-card">
@@ -2329,6 +2489,7 @@
                                         <th>金額</th>
                                         <th>残高</th>
                                         <th>特記事項</th>
+                                        <th>信頼度</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2352,6 +2513,7 @@
                                     `<span class="annotation-badge badge-${note === '相続前後' ? 'inheritance-period' : note === '未成年' ? 'minor' : 'cohabit'}">${note}</span>`
                                 ).join(' ')}
                             </td>
+                            <td><span class="confidence-indicator confidence-${tx.confidence}">${tx.confidence}</span></td>
                         </tr>
                     `;
                 });
@@ -2362,7 +2524,7 @@
             container.innerHTML = html;
         }
         
-        // 住所履歴ビュー（改良版）
+        // 住所履歴ビュー
         function updateAddressView() {
             const container = document.getElementById('addresses-content');
             const inheritanceDate = systemData.inheritanceDate;
@@ -2371,7 +2533,6 @@
             
             let html = '<h3 style="margin: 20px 0;">🏠 住所移転状況一覧</h3>';
             
-            // 相続開始時の同居状況サマリー
             if (deceased && deceasedInhAddr) {
                 const cohabitants = [];
                 systemData.family.forEach(person => {
@@ -2394,7 +2555,6 @@
                 }
             }
             
-            // 各人の住所履歴
             systemData.family.forEach(person => {
                 const addresses = systemData.addresses.filter(a => a.name === person.name);
                 if (addresses.length === 0) return;
@@ -2461,7 +2621,7 @@
                     <p>この一覧は元データに注記を追加したもので、エクスポート機能で出力できます。</p>
                 </div>
                 <div class="data-table-wrapper">
-                    <table class="data-table" style="min-width: 1200px;">
+                    <table class="data-table" style="min-width: 1400px;">
                         <thead>
                             <tr>
                                 <th>日付</th>
@@ -2475,13 +2635,13 @@
                                 <th>入金</th>
                                 <th>残高</th>
                                 <th>摘要</th>
-                                <th style="min-width: 300px;">注記</th>
+                                <th style="min-width: 350px;">注記</th>
+                                <th>信頼度</th>
                             </tr>
                         </thead>
                         <tbody>
             `;
             
-            // 注記がある取引のみ表示
             systemData.transactions.filter(tx => tx.annotations.length > 0).forEach(tx => {
                 const rowClass = tx.annotations.some(a => a.includes('要注意')) ? 'danger-highlight' : 'highlight-row';
                 
@@ -2497,7 +2657,8 @@
                 html += `<td class="text-right">${tx.deposit > 0 ? tx.deposit.toLocaleString() : ''}</td>`;
                 html += `<td class="text-right">${tx.balance > 0 ? tx.balance.toLocaleString() : ''}</td>`;
                 html += `<td>${tx.description}</td>`;
-                html += `<td style="font-weight: 600; color: #c62828;">${tx.annotations.join(' / ')}</td>`;
+                html += `<td style="font-weight: 700; color: #e74c3c;">${tx.annotations.join(' / ')}</td>`;
+                html += `<td><span class="confidence-indicator confidence-${tx.confidence}">${tx.confidence}</span></td>`;
                 html += '</tr>';
             });
             
@@ -2505,114 +2666,181 @@
             container.innerHTML = html;
         }
         
-        // 家系図ビュー
+        // 家系図ビュー（改良版）
         function updateFamilyView() {
             const container = document.getElementById('family-content');
-            const inheritanceDate = systemData.inheritanceDate;
             
             let html = '<div class="family-tree-wrapper">';
+            html += '<div class="zoom-controls">';
+            html += '<button class="zoom-btn" onclick="zoomIn()">+</button>';
+            html += '<button class="zoom-btn" onclick="zoomOut()">-</button>';
+            html += '<button class="zoom-btn" onclick="zoomReset()">⟲</button>';
+            html += '</div>';
             html += '<h2 class="family-tree-title">相続関係図</h2>';
-            html += '<div class="family-tree">';
             
-            // 簡易的な家系図（実装は元のコードを参考に改良）
-            const deceased = systemData.family.find(f => f.isDeceased);
-            const spouse = systemData.family.find(f => f.relationship.includes('配偶者'));
-            const children = systemData.family.filter(f => 
-                f.relationship.includes('長男') || 
-                f.relationship.includes('次男') || 
-                f.relationship.includes('三男') ||
-                f.relationship.includes('長女') || 
-                f.relationship.includes('次女') || 
-                f.relationship.includes('三女') ||
-                (f.relationship.includes('子') && !f.relationship.includes('孫'))
-            );
-            
-            // 被相続人世代
-            html += '<div class="generation">';
-            html += '<div class="generation-label">被相続人世代</div>';
-            
-            if (deceased) {
-                html += createFamilyMemberCard(deceased, inheritanceDate);
-            }
-            if (spouse) {
-                html += createFamilyMemberCard(spouse, inheritanceDate);
-            }
+            const svgContent = createFamilyTreeSVG();
+            html += svgContent;
             
             html += '</div>';
-            
-            // 子世代
-            if (children.length > 0) {
-                html += '<div class="generation">';
-                html += '<div class="generation-label">子世代</div>';
-                
-                children.forEach(child => {
-                    html += createFamilyMemberCard(child, inheritanceDate);
-                });
-                
-                html += '</div>';
-            }
-            
-            html += '</div></div>';
             container.innerHTML = html;
         }
         
-        // 家族メンバーカード作成
-        function createFamilyMemberCard(person, inheritanceDate) {
-            const currentAge = person.birthDate ? calculateAge(person.birthDate, new Date()) : null;
-            const inhAge = person.ageAtInheritance || (person.birthDate ? calculateAge(person.birthDate, inheritanceDate) : null);
-            const currentAddress = getAddressAtDate(person.name, new Date());
-            const inhAddress = getAddressAtDate(person.name, inheritanceDate);
+        // 家系図SVG生成（改良版）
+        function createFamilyTreeSVG() {
+            const width = 1400;
+            const height = 900;
+            const boxWidth = 220;
+            const boxHeight = 140;
+            const hGap = 60;
+            const vGap = 180;
             
-            const deceased = systemData.family.find(f => f.isDeceased);
-            const isSameAddressCurrent = deceased && currentAddress === getAddressAtDate(deceased.name, new Date());
-            const isSameAddressInh = deceased && inhAddress === getAddressAtDate(deceased.name, inheritanceDate);
+            const generations = {
+                0: [],
+                1: [],
+                2: [],
+                3: []
+            };
             
-            let html = `
-                <div class="family-member ${person.isDeceased ? 'deceased' : ''} ${person.gender || 'unknown'}">
-                    <div class="member-name">${person.name}</div>
-                    <div class="member-info">
-                        <div class="member-info-row">
-                            <span class="member-info-label">続柄：</span>
-                            <span>${person.relationship}</span>
-                        </div>
-                        <div class="member-info-row">
-                            <span class="member-info-label">生年月日：</span>
-                            <span>${person.birthDate || '不明'}</span>
-                        </div>
-                        ${inhAge !== null ? `
-                        <div class="member-info-row">
-                            <span class="member-info-label">相続時年齢：</span>
-                            <span>${inhAge}歳</span>
-                        </div>
-                        ` : ''}
-                        ${!person.isDeceased && currentAge !== null ? `
-                        <div class="member-info-row">
-                            <span class="member-info-label">現在年齢：</span>
-                            <span>${currentAge}歳</span>
-                        </div>
-                        ` : ''}
-                    </div>
-                    <div class="address-info">
-                        <div style="font-weight: 600; margin-bottom: 8px;">住所情報</div>
-                        ${inhAddress ? `
-                        <div style="margin: 4px 0;">
-                            <strong>相続時：</strong><br>
-                            ${inhAddress}
-                            ${isSameAddressInh ? '<span class="address-status same-address">同居</span>' : ''}
-                        </div>
-                        ` : ''}
-                        ${!person.isDeceased && currentAddress ? `
-                        <div style="margin: 4px 0;">
-                            <strong>現在：</strong><br>
-                            ${currentAddress}
-                            ${isSameAddressCurrent ? '<span class="address-status same-address">同居</span>' : ''}
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
+            systemData.family.forEach(person => {
+                generations[person.generation || 3].push(person);
+            });
             
-            return html;
+            let svg = `<svg id="familyTreeSvg" class="family-tree-svg" viewBox="0 0 ${width} ${height}">`;
+            
+            svg += `<defs>
+                <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#ecf0f1" stroke-width="1"/>
+                </pattern>
+            </defs>
+            <rect width="${width}" height="${height}" fill="url(#grid)" />`;
+            
+            const positions = {};
+            let currentY = 80;
+            
+            // 被相続人世代
+            const gen0Width = generations[0].length * (boxWidth + hGap) - hGap;
+            let currentX = (width - gen0Width) / 2;
+            
+            generations[0].forEach((person, index) => {
+                const x = currentX + index * (boxWidth + hGap);
+                const y = currentY;
+                positions[person.name] = { x: x + boxWidth/2, y: y + boxHeight/2 };
+                
+                svg += createPersonBox(person, x, y, boxWidth, boxHeight);
+                
+                if (index > 0 && person.spouse) {
+                    const spousePos = positions[person.spouse];
+                    if (spousePos) {
+                        svg += `<line class="relation-line spouse-line" 
+                            x1="${spousePos.x}" y1="${spousePos.y}" 
+                            x2="${x + boxWidth/2}" y2="${y + boxHeight/2}" />`;
+                    }
+                }
+            });
+            
+            // 子世代
+            currentY += vGap;
+            if (generations[1].length > 0) {
+                const gen1Width = generations[1].length * (boxWidth + hGap) - hGap;
+                currentX = (width - gen1Width) / 2;
+                
+                generations[1].forEach((person, index) => {
+                    const x = currentX + index * (boxWidth + hGap);
+                    const y = currentY;
+                    positions[person.name] = { x: x + boxWidth/2, y: y + boxHeight/2 };
+                    
+                    svg += createPersonBox(person, x, y, boxWidth, boxHeight);
+                    
+                    if (person.parent && positions[person.parent]) {
+                        const parentPos = positions[person.parent];
+                        svg += `<line class="relation-line" 
+                            x1="${parentPos.x}" y1="${parentPos.y + boxHeight/2}" 
+                            x2="${x + boxWidth/2}" y2="${y}" />`;
+                    }
+                });
+            }
+            
+            // 孫世代
+            currentY += vGap;
+            if (generations[2].length > 0) {
+                const gen2Width = generations[2].length * (boxWidth + hGap) - hGap;
+                currentX = (width - gen2Width) / 2;
+                
+                generations[2].forEach((person, index) => {
+                    const x = currentX + index * (boxWidth + hGap);
+                    const y = currentY;
+                    positions[person.name] = { x: x + boxWidth/2, y: y + boxHeight/2 };
+                    
+                    svg += createPersonBox(person, x, y, boxWidth, boxHeight);
+                    
+                    if (person.parent && positions[person.parent]) {
+                        const parentPos = positions[person.parent];
+                        svg += `<line class="relation-line" 
+                            x1="${parentPos.x}" y1="${parentPos.y + boxHeight/2}" 
+                            x2="${x + boxWidth/2}" y2="${y}" />`;
+                    }
+                });
+            }
+            
+            svg += '</svg>';
+            return svg;
+        }
+        
+        // 人物ボックス生成
+        function createPersonBox(person, x, y, width, height) {
+            const isDeceased = person.isDeceased;
+            const isMale = person.gender === 'male';
+            const address = getAddressAtDate(person.name, systemData.inheritanceDate);
+            
+            let box = '';
+            
+            const rx = isMale ? 0 : 35;
+            box += `<rect class="member-box ${isDeceased ? 'deceased' : ''} ${person.gender || 'unknown'}" 
+                x="${x}" y="${y}" width="${width}" height="${height}" rx="${rx}" ry="${rx}" />`;
+            
+            box += `<text class="member-name" x="${x + width/2}" y="${y + 30}" text-anchor="middle">${person.name}</text>`;
+            box += `<text class="member-text" x="${x + width/2}" y="${y + 55}" text-anchor="middle">${person.relationship}</text>`;
+            
+            if (person.birthDate) {
+                box += `<text class="member-text" x="${x + width/2}" y="${y + 80}" text-anchor="middle">生: ${person.birthDate}</text>`;
+            }
+            
+            if (person.ageAtInheritance !== undefined) {
+                box += `<text class="member-text" x="${x + width/2}" y="${y + 105}" text-anchor="middle">相続時: ${person.ageAtInheritance}歳</text>`;
+            }
+            
+            if (address) {
+                const shortAddr = address.length > 18 ? address.substring(0, 18) + '...' : address;
+                box += `<text class="member-text" x="${x + width/2}" y="${y + 125}" text-anchor="middle" font-size="13">${shortAddr}</text>`;
+            }
+            
+            return box;
+        }
+        
+        // ズーム機能
+        let currentZoom = 1;
+        
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom * 1.2, 3);
+            applyZoom();
+        }
+        
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom / 1.2, 0.5);
+            applyZoom();
+        }
+        
+        function zoomReset() {
+            currentZoom = 1;
+            applyZoom();
+        }
+        
+        function applyZoom() {
+            const svg = document.getElementById('familyTreeSvg');
+            if (svg) {
+                svg.style.transform = `scale(${currentZoom})`;
+                svg.style.transformOrigin = 'center center';
+            }
         }
         
         // タブ切り替え
@@ -2624,34 +2852,33 @@
             document.getElementById(tabName + '-content').classList.add('active');
         }
         
-        // 結果エクスポート（サマリー）
+        // 結果エクスポート
         function exportResults() {
             const inheritanceDate = systemData.inheritanceDate;
             
-            let csv = '\uFEFF'; // BOM
-            csv += '相続税調査分析システム 分析結果\n';
+            let csv = '\uFEFF';
+            csv += '相続税調査分析システム v3 分析結果\n';
             csv += `分析日時,${new Date().toLocaleString('ja-JP')}\n`;
             csv += `相続開始日,${inheritanceDate}\n\n`;
             
-            // 要注意取引
             csv += '【要注意取引一覧】\n';
-            csv += '日付,時刻,氏名,銀行,支店,出金,入金,残高,摘要,フラグ,注記\n';
+            csv += '日付,時刻,氏名,銀行,支店,出金,入金,残高,摘要,フラグ,注記,信頼度\n';
             
             systemData.transactions.filter(tx => tx.flags.length > 0).forEach(tx => {
                 csv += `"${tx.date}","${tx.time || ''}","${tx.name}","${tx.bank}","${tx.branch}",`;
-                csv += `${tx.withdrawal},${tx.deposit},${tx.balance},"${tx.description}","${tx.flags.join('・')}","${tx.annotations.join(' / ')}"\n`;
+                csv += `${tx.withdrawal},${tx.deposit},${tx.balance},"${tx.description}","${tx.flags.join('・')}","${tx.annotations.join(' / ')}","${tx.confidence}"\n`;
             });
             
             csv += '\n【資金移動】\n';
-            csv += '出金日,送金者,受取人,金額,入金日,日数差,金額差,家族間\n';
+            csv += '出金日,送金者,受取人,金額,入金日,日数差,金額差,家族間,信頼度\n';
             systemData.processedData.transfers.forEach(t => {
-                csv += `"${t.date}","${t.from}","${t.to}",${t.amount},"${t.depositDate}",${t.daysDiff},${t.amountDiff},${t.isFamily ? '○' : ''}\n`;
+                csv += `"${t.date}","${t.from}","${t.to}",${t.amount},"${t.depositDate}",${t.daysDiff},${t.amountDiff},${t.isFamily ? '○' : ''},"${t.confidence}"\n`;
             });
             
             csv += '\n【原資不明取引】\n';
-            csv += '日付,氏名,銀行,金額,摘要,理由\n';
+            csv += '日付,氏名,銀行,金額,摘要,理由,信頼度\n';
             systemData.processedData.unknownSources.forEach(tx => {
-                csv += `"${tx.date}","${tx.name}","${tx.bank} ${tx.branch}",${tx.deposit},"${tx.description}","${tx.reason}"\n`;
+                csv += `"${tx.date}","${tx.name}","${tx.bank} ${tx.branch}",${tx.deposit},"${tx.description}","${tx.reason}","${tx.confidence}"\n`;
             });
             
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -2665,7 +2892,7 @@
         
         // 注記付き元データエクスポート
         function exportAnnotatedData() {
-            let csv = '\uFEFF'; // BOM
+            let csv = '\uFEFF';
             csv += '銀行名,支店名,氏名,科目,口座番号,日付,時刻,出金,入金,取扱店,機番,摘要,残高,注記\n';
             
             systemData.transactions.forEach(tx => {
